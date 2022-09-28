@@ -4,8 +4,8 @@ import React, { useState } from 'react'
  
 
 export interface ISurveyScreen{
-    questionNo:string;
-    
+    questionNo:number;
+    question:string;
     goToNext?:(data:any)=>void
 }
 
@@ -20,7 +20,7 @@ const SurveyScreen = (props:ISurveyScreen) => {
 
   return (
     <>
-    <div>SurveyScreen</div>
+    <div>{props.question}</div>
     <input type="text" value={data} onChange={(e)=>setData(e.target.value)}></input>
     <button onClick={handleOnNext}>Next</button>
     </>
