@@ -4,45 +4,18 @@ import './App.css'
 import OnBoardingDataFlow from './components/OnBoardingFlowHolder/OnBoardingDataFlow'
 import SurveyScreen, { ISurveyScreen } from './components/Screens/SurveyScreen'
 import SurveyFinish from './components/Screens/SurveyFinish'
-import { IQuestion, Questions } from './data/Questions'
+import { Questions } from './data/Questions'
 
 function App() {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [onBoardingData, setOnBoardingData] = useState({})
-  const [questions, setQuestions] = useState<IQuestion[]>([])
-
-  const[currentQuestion,setCurrentQuestion]=useState<IQuestion>({
-      Question: '',
-      QuestionNo: 0,
-    });
-
-  //const questions = useRef<IQuestion[]>([]) // here we are using ref, because we dont need a re-render.
- 
-
-  React.useEffect(() => {
-    console.log('simulating an api call for getting the questions.')
-
-    setQuestions(Questions);
-
-     
-    // if(questions.current.length>0){
-    
-    //   setCurrentQuestion({QuestionNo:questions.current[0].QuestionNo,Question:questions.current[0].Question})
-    // }
-  }, [])
+   
 
    
-  //const getCurrentScreen=()=>{
+ 
 
-     
-   const screens:ReactElement<ISurveyScreen>[]= questions.map(question=>{
-      return(
-        <SurveyScreen questionNo={question.QuestionNo} question={question.Question}/>
-      )
-    })
-   //
-  //  return screens;
-  //}
+   
+ 
   
 
   const onNext = (stepData: any) => {
@@ -53,30 +26,44 @@ function App() {
     }
     setCurrentIndex(nextIndex)
     setOnBoardingData(updatedData)
-
-    console.log('nextindex',nextIndex);
+ 
     
-    const nextQuestion = questions.current.filter(question => question.QuestionNo === nextIndex+1);
-    console.log('nq',nextQuestion);
     
-    setCurrentQuestion({QuestionNo:nextQuestion[0].QuestionNo,Question:nextQuestion[0].Question})
-
-
+    console.log('updatedData', updatedData)
+  }
+  const onPrevious = (stepData: any) => {
+    const nextIndex = currentIndex - 1
+    const updatedData = {
+      ...onBoardingData,
+      ...stepData,
+    }
+    setCurrentIndex(nextIndex)
+    setOnBoardingData(updatedData)
+ 
+    
+    
     console.log('updatedData', updatedData)
   }
 
-  // const surveyScreens= Questions.map(question => {
-  //      return(<SurveyScreen questionNo={question.QuestionNo} question={question.Question} />)
-  // });
+   
 
   return (
     <div className="App">
-      <OnBoardingDataFlow onNext={onNext} currentIndex={currentIndex}>
-        {screens}
+
+     
+      <OnBoardingDataFlow onNext={onNext} onPrevious={onPrevious} currentIndex={currentIndex}>
+       
+       <SurveyScreen questionNo={Questions[0].QuestionNo} question={Questions[0].Question}/>
+       <SurveyScreen questionNo={Questions[1].QuestionNo} question={Questions[1].Question}/>
+       <SurveyScreen questionNo={Questions[2].QuestionNo} question={Questions[2].Question}/>
+       <SurveyScreen questionNo={Questions[3].QuestionNo} question={Questions[3].Question}/>
+       <SurveyScreen questionNo={Questions[4].QuestionNo} question={Questions[4].Question}/>
+       
         <SurveyFinish onBoardingData={onBoardingData} />
       </OnBoardingDataFlow>
     </div>
   )
 }
+ 
 
 export default App
